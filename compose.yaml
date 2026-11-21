@@ -5,4 +5,9 @@ services:
       - "8000:8000"
     environment:
       DJANGO_DEBUG: "1"
+    volumes:
+      - django_db:/app/mysite/db
     restart: always
+
+volumes:
+  django_db:
