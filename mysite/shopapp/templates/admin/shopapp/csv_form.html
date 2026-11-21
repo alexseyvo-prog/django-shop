@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <h1>Импорт заказов из CSV</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="submit-row">
+            <input type="submit" value="Импортировать">
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Заказы пользователя</title>
+</head>
+<body>
+    {% load cache %}
+
+    <h1>
+        {% if orders %}
+            Пользователь ({{ owner.get_full_name|default:owner.username }}) выполнил следующие заказы
+        {% else %}
+            У пользователя ({{ owner.get_full_name|default:owner.username }}) ещё нет заказов
+        {% endif %}
+    </h1>
+
+    <p>Без кэша: {{ random_number }}</p>
+
+    {% cache 300 user_orders owner.id %}
+        <p>Из кэша: {{ cached_random_number }}</p>
+
+        {% if orders %}
+            <ul>
+                {% for order in orders %}
+                    <li>
+                        <a href="{% url 'shopapp:order_details' order.pk %}">
+                            Заказ #{{ order.pk }}
+                        </a>
+                        — {{ order.created_at|date:"d.m.Y H:i" }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endcache %}
+</body>
+</html>
