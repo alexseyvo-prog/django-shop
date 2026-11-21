@@ -2,12 +2,16 @@ FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV POETRY_VIRTUALENVS_CREATE=false
+ENV POETRY_NO_INTERACTION=1
 
 WORKDIR /app
 
-COPY requirements.txt ./
+RUN pip install --no-cache-dir poetry==1.8.5
 
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml poetry.lock ./
+
+RUN poetry install --no-root --only main
 
 COPY . .
 
